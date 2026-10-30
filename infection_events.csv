@@ -1,0 +1,23 @@
+procedure_id,days_to_onset,severity,organism,confirmed,treatment,readmitted
+PR100029,7,Superficial,No growth,0,Wound care / review,0
+PR100061,7,Superficial,No growth,0,Wound care / review,0
+PR100069,6,Superficial,No growth,0,Wound care / review,0
+PR100072,7,Superficial,Gram-negative,1,Oral antibiotics,0
+PR100075,4,Superficial,No growth,0,Wound care / review,0
+PR100266,12,Superficial,No growth,0,Wound care / review,1
+PR100314,6,Superficial,Staphylococcus aureus (MSSA),1,Oral antibiotics,0
+PR100324,5,Superficial,Staphylococcus aureus (MSSA),1,Oral antibiotics,0
+PR100376,17,Superficial,Gram-negative,1,Oral antibiotics,0
+PR100447,7,Superficial,Gram-negative,1,Oral antibiotics,1
+PR100739,4,Deep,Staphylococcus aureus (MSSA),1,IV antibiotics + drainage,1
+PR100785,3,Bloodstream,Coagulase-negative Staph,1,IV antibiotics,1
+PR100799,5,Superficial,Staphylococcus aureus (MSSA),1,Oral antibiotics,0
+PR100818,4,Superficial,Staphylococcus aureus (MSSA),1,Oral antibiotics,0
+PR100825,5,Superficial,No growth,0,Wound care / review,1
+PR100909,10,Superficial,No growth,0,Wound care / review,0
+PR100914,4,Superficial,No growth,0,Wound care / review,0
+PR101074,13,Superficial,Not cultured,0,Wound care / review,0
+PR101094,1,Superficial,Not cultured,0,Wound care / review,0
+PR101107,6,Superficial,Not cultured,0,Wound care / review,0
+PR101179,10,Superficial,No growth,0,Wound care / review,0
+PR101358,4,Bloodstream,Coagulase-negative Staph,1,IV antibiotics,1
