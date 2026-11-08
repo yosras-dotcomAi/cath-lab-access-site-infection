@@ -5,7 +5,8 @@
 | | |
 |---|---|
 | **Live dashboard** | [Open the Streamlit app](https://cath-lab-access-site-infection-jtnbpsxxuhgsjclysbwxpr.streamlit.app/) |
-| **Project slides** | [View the presentation](docs/Cath_Lab_Infection_Slides.pptx) |
+| **Project slides** | [View the presentation]([Cath_Lab_Infection_Slides.pptx](https://github.com/user-attachments/files/34542184/Cath_Lab_Infection_Slides.pptx)
+
 
 ## Question
 
