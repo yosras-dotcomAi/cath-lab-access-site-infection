@@ -26,16 +26,18 @@ st.markdown(
     """
 <style>
 .block-container{padding-top:1.4rem;max-width:1280px}
-.hero h1{font-size:2.0rem;margin:0 0 .2rem 0;color:#fff}
-.hero p{color:#9FB6CF;margin:0 0 .8rem 0;font-size:1.02rem}
-.sim{background:#33280c;border:1px solid #B7791F;color:#F5D58B;border-radius:8px;padding:9px 14px;font-size:.92rem;margin-bottom:1rem}
+.hero h1{font-size:2.0rem;margin:0 0 .2rem 0;color:inherit}
+.hero p{color:inherit;opacity:.75;margin:0 0 .8rem 0;font-size:1.02rem}
+.sim{background:#16263d;border:1px solid #2F4A6D;border-left:4px solid #F2B84B;color:#E6EEF7;border-radius:8px;padding:10px 14px;font-size:.92rem;margin-bottom:1rem}
 .kpi{background:#121C2E;border:1px solid #1F3250;border-radius:12px;padding:14px 16px;height:100%}
 .kpi .v{font-size:1.85rem;font-weight:700;color:#fff;line-height:1.15}
-.kpi .l{color:#9FB6CF;font-size:.85rem;margin-top:2px}
+.kpi .l{color:#C9DCF0;font-size:.85rem;margin-top:2px}
 .kpi .s{color:#6F8CAB;font-size:.76rem;margin-top:2px}
-.answer{background:#0F2238;border-left:4px solid #3B8FD9;border-radius:8px;padding:14px 18px;margin:.6rem 0 1rem 0}
+.answer{background:#0F2238;border-left:4px solid #3B8FD9;border-radius:8px;padding:14px 18px;margin:.6rem 0 1rem 0;color:#E6EEF7}
 .answer h4{margin:0 0 .4rem 0;color:#fff}
-.note{color:#8DA3BA;font-size:.85rem}
+.answer b{color:#fff}
+.answer .note{color:#9FB6CF}
+.note{color:#7F93A8;font-size:.85rem}
 </style>
 """,
     unsafe_allow_html=True,
@@ -103,18 +105,18 @@ def kpi(col, value, label, sub=""):
 
 def style(fig, h=380, legend=True):
     fig.update_layout(
-        template="plotly_dark", height=h, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=10, r=10, t=40, b=10), showlegend=legend, font=dict(size=13),
-        legend=dict(orientation="h", y=1.12, x=0),
+        height=h, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+        margin=dict(l=10, r=10, t=50, b=70 if legend else 10), showlegend=legend, font=dict(size=13),
+        legend=dict(orientation="h", y=-0.18, x=0, yanchor="top"),
     )
-    fig.update_xaxes(gridcolor="#1F2B3F", zeroline=False)
-    fig.update_yaxes(gridcolor="#1F2B3F", zeroline=False)
+    fig.update_xaxes(gridcolor="rgba(127,127,127,0.25)", zeroline=False)
+    fig.update_yaxes(gridcolor="rgba(127,127,127,0.25)", zeroline=False)
     return fig
 
 
 def err_bar(fig, df, **kw):
     fig.add_trace(go.Bar(
-        x=df["group"], y=df["rate"], error_y=dict(type="data", symmetric=False, array=df["hi"] - df["rate"], arrayminus=df["rate"] - df["lo"], color="#C9DCF0"),
+        x=df["group"], y=df["rate"], error_y=dict(type="data", symmetric=False, array=df["hi"] - df["rate"], arrayminus=df["rate"] - df["lo"], color="#8DA3BA"),
         text=[f"{v:.1f}" for v in df["rate"]], textposition="outside", cliponaxis=False, **kw))
     return fig
 
@@ -152,7 +154,7 @@ t1, t2, t3, t4, t5, t6, t7 = st.tabs([
 # ================================================================== TAB 1
 with t1:
     if view.empty:
-        st.warning("No procedures match the filters.")
+        st.info("No procedures match the filters.")
     else:
         n = len(view)
         s = rate_row(view["suspected_infection_30d"].sum(), n)
@@ -245,7 +247,7 @@ with t2:
 with t3:
     st.markdown(f"#### {outcome_label} by risk factor (per 1,000, exact 95% CI)")
     if view.empty:
-        st.warning("No procedures match the filters.")
+        st.info("No procedures match the filters.")
     else:
         d = view
         defs = [
@@ -290,14 +292,14 @@ with t3:
                 fig = err_bar(fig, dd, marker_color=BLUE, showlegend=False)
                 fig.update_layout(title=title, yaxis_title="Per 1,000")
                 col.plotly_chart(style(fig, 320, False), width="stretch")
-            st.warning("Operator and room comparisons are not reliable at this event count. Intervals are wide and overlap. They are shown for completeness, not for ranking people.")
+            st.info("Operator and room comparisons are not reliable at this event count. Intervals are wide and overlap. They are shown for completeness, not for ranking people.")
 
 # ================================================================== TAB 4
 with t4:
     st.markdown("#### The infection-control steps, one at a time")
     st.caption("Each step is a thing the team controls. The cards show how often the step is completed and the infection rate when it is done or missed.")
     if view.empty:
-        st.warning("No procedures match the filters.")
+        st.info("No procedures match the filters.")
     else:
         d = view
         steps = [
@@ -348,7 +350,7 @@ with t4:
 with t5:
     st.markdown(f"#### Monthly {outcome_label.lower()} rate (p-chart)")
     if view.empty:
-        st.warning("No procedures match the filters.")
+        st.info("No procedures match the filters.")
     else:
         mth = view.groupby("month").agg(n=("procedure_id", "count"), k=(OUT, "sum")).reset_index()
         pbar = mth.k.sum() / mth.n.sum()
@@ -380,7 +382,7 @@ with t6:
     ev = events_all.merge(view[["procedure_id", "case_type", "access_site"]], on="procedure_id", how="inner")
     st.markdown("#### What happened in the suspected infections")
     if ev.empty:
-        st.warning("No infection events in the selected procedures.")
+        st.info("No infection events in the selected procedures.")
     else:
         cols = st.columns(4)
         kpi(cols[0], f"{len(ev)}", "Suspected infections", "events in the selection")
